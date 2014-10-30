@@ -140,7 +140,10 @@ class CXFParser(object):
                     line = feeder.consume()
                     # split the line after the first whitespace
                     type_def, coord_string = line.split(None, 1)
-                    coords = [float(value) for value in coord_string.split(",")]
+                    try:
+                        coords = [float(value) for value in coord_string.split(",")]
+                    except ValueError:
+                        raise _CXFParseError("Malformed coordinate in font file. " + line)
                     type_char = line[0].upper()
                     if (type_def == "L") and (len(coords) == 4):
                         # line
